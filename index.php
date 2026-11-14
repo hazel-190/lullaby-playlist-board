@@ -1,15 +1,13 @@
 <?php
-// Lullaby Playlist Board - IT 110 activity
+
 session_start();
 require 'db.php';
 
-// Session: visit counter (resets when the browser is closed)
 $_SESSION['visits'] = ($_SESSION['visits'] ?? 0) + 1;
 $visits = $_SESSION['visits'];
 
 $error = '';
 
-// POST: save a song
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $author   = trim($_POST['author'] ?? '');
     $body     = trim($_POST['body'] ?? '');
@@ -23,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('INSERT INTO messages (author, body) VALUES (:author, :body)');
         $stmt->execute([':author' => $author, ':body' => $body]);
 
-        // Cookie only when the checkbox is ticked
         if ($remember) {
             setcookie('listener_name', $author, [
                 'expires'  => time() + 60 * 60 * 24 * 30,
@@ -44,7 +41,6 @@ $savedName  = $_COOKIE['listener_name'] ?? '';
 $nameValue  = $_POST['author'] ?? $savedName;
 $remembered = $savedName !== '';
 
-// GET: search (newest first)
 $search = trim($_GET['search'] ?? '');
 if ($search !== '') {
     $stmt = $pdo->prepare(
@@ -234,7 +230,6 @@ function e(string $s): string {
     document.getElementById('openForm').addEventListener('click', function () { dlg.showModal(); });
     document.getElementById('closeForm').addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
-    // Enter in the name box jumps to the song box; Enter in the song box posts it
     var nameInput = document.getElementById('author');
     var songInput = document.getElementById('body');
     nameInput.addEventListener('keydown', function (e) {
@@ -245,7 +240,6 @@ function e(string $s): string {
     });
     if (dlg.dataset.open === '1') dlg.showModal();   // reopen if there was a form error
 
-    // Day / night theme toggle (saved in localStorage, not a cookie)
     var themeBtn = document.getElementById('themeBtn');
     function paintTheme() {
         var dark = document.documentElement.getAttribute('data-theme') === 'dark';
