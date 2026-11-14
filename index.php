@@ -238,7 +238,7 @@ function e(string $s): string {
     songInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); songInput.form.requestSubmit(); }
     });
-    if (dlg.dataset.open === '1') dlg.showModal();   // reopen if there was a form error
+    if (dlg.dataset.open === '1') dlg.showModal();   
 
     var themeBtn = document.getElementById('themeBtn');
     function paintTheme() {
